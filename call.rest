@@ -2,16 +2,16 @@
 GET http://localhost:3000/api/users
 
 ### Get single
-GET http://localhost:3000/api/users/324
+GET http://localhost:3000/api/users/1
 
 ### Create new
 POST http://localhost:3000/api/users
 Content-Type: application/json; charset=utf-8
 
 {
-  "name": "Josefine2",
-  "birthDate": "2002-03-30T00:00:00.000Z",
-  "hourlySalary": 501
+  "username": "Coolguy",
+  "password": "am8w7d7N",
+  "id": "1"
 }
 
 ### UPDATE
@@ -19,9 +19,9 @@ PUT http://localhost:3000/api/users/5
 Content-Type: application/json; charset=utf-8
 
 {
-  "name": "Josefine2",
-  "birthDate": "2002-03-30T00:00:00.000Z",
-  "hourlySalary": 51
+    "username": "WaO",
+    "password": "waw125",
+    "id": "328"
 }
 
 ### DELETE

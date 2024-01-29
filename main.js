@@ -22,6 +22,9 @@ const users = [
     }
 ]
 
+app.get('/api/users', (req, res) => {
+    res.json(users)
+})
 
 
 app.get('/api/users/:anvId', (req, res) => {
@@ -34,9 +37,17 @@ app.get('/api/users/:anvId', (req, res) => {
     res.json(p)
 });
 
+app.post('/api/users', (req, res) => {
+
+    const user = {
+        username: req.body.username,
+        password: req.body.password,
+        id: req.body.id
+    }
+    users.push(user)
+    res.send(users)
+})
+
 app.listen(port, (req, res) => {
     console.log('Listening')
-})
-app.listen(port, () => {
-    console.log(`Example app listening2 on port ${port}`)
 })
