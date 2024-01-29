@@ -22,9 +22,7 @@ const users = [
     }
 ]
 
-app.listen(port, (req, res) => {
-    res.send('Listening')
-})
+
 
 app.get('/api/users/:anvId', (req, res) => {
     console.log(req.params.anvId)
@@ -35,3 +33,10 @@ app.get('/api/users/:anvId', (req, res) => {
     }
     res.json(p)
 });
+
+app.listen(port, (req, res) => {
+    console.log('Listening')
+})
+app.listen(port, () => {
+    console.log(`Example app listening2 on port ${port}`)
+})
