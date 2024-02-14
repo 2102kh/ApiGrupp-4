@@ -3,24 +3,12 @@ const cors = require('cors')
 const app = express()
 const port = 3000 // "Radiofrekvens"
 
+const migrationhelper = require('./migrationhelper')
+
 
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 app.use(cors())
-
-
-const users = [
-    {
-        username: "Waw",
-        password: "waw123",
-        id: "324"
-    },
-    {
-        username: "Tag",
-        password: "tag123",
-        id: "321"
-    }
-]
 
 app.get('/api/users', (req, res) => {
     res.json(users)
@@ -48,7 +36,8 @@ app.post('/api/users', (req, res) => {
     res.send(users)
 })
 
-app.listen(port, (req, res) => {
+app.listen(port, async (req, res) => {
 
     console.log('Listening')
+    await migrationhelper.migrate()
 })
