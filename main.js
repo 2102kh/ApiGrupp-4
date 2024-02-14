@@ -1,7 +1,10 @@
 const express = require('express')
+const session = require('express-session')
 const cors = require('cors')
 const app = express()
 const port = 3000 // "Radiofrekvens"
+const onCreateUser = require('./controllers/userController.js')
+
 
 const migrationhelper = require('./migrationhelper')
 
@@ -25,16 +28,7 @@ app.get('/api/users/:anvId', (req, res) => {
     res.json(p)
 });
 
-app.post('/api/users', (req, res) => {
-
-    const user = {
-        username: req.body.username,
-        password: req.body.password,
-        id: req.body.id
-    }
-    users.push(user)
-    res.send(users)
-})
+app.post('/api/users', onCreateUser.onCreateUser)
 
 app.listen(port, async (req, res) => {
 

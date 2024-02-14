@@ -9,7 +9,8 @@ POST http://localhost:3000/api/users
 Content-Type: application/json; charset=utf-8
 
 {
-  "username": "Coolguy",
+  "firstName": "Coolguy",
+  "email": "asd@asd.com",
   "password": "am8w7d7N",
   "id": "1"
 }
