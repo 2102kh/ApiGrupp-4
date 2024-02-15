@@ -3,14 +3,37 @@ const session = require('express-session')
 const cors = require('cors')
 const app = express()
 const port = 3000 // "Radiofrekvens"
-const onCreateUser = require('./controllers/userController.js')
+const userController = require('./controllers/userController.js')
 
+const { sequelize, userAccount } = require('./models')
 
 const migrationhelper = require('./migrationhelper')
 
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Credentials', '*');
+    next();
+});
 
-const bodyParser = require('body-parser')
-app.use(bodyParser.json())
+app.use(cors({
+    origin: "http://localhost:5500",
+    credentials: true,
+    // : "http://localhost:5500",
+
+
+}))
+
+
+
+app.use(session({
+    secret: 'my-secret-key',
+    resave: false,
+    saveUninitialized: true,
+    // cookie: { secure: true } HTTPS
+}));
+
+
+
+app.use(express.json())
 app.use(cors())
 
 app.get('/api/users', (req, res) => {
@@ -28,7 +51,8 @@ app.get('/api/users/:anvId', (req, res) => {
     res.json(p)
 });
 
-app.post('/api/users', onCreateUser.onCreateUser)
+app.post('/api/users', userController.onCreateUser)
+app.post('/api/signIn', userController.onLogin);
 
 app.listen(port, async (req, res) => {
 
