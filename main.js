@@ -18,8 +18,6 @@ app.use(cors({
     origin: "http://localhost:5500",
     credentials: true,
     // : "http://localhost:5500",
-
-
 }))
 
 
@@ -34,7 +32,6 @@ app.use(session({
 
 
 app.use(express.json())
-app.use(cors())
 
 app.get('/api/users', (req, res) => {
     res.json(users)
