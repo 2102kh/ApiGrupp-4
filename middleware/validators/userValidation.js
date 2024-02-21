@@ -15,7 +15,7 @@ const validateCreateUser = [
         .trim()
         .not()
         .isEmpty()
-        .withMessage('Name can not be empty!')
+        .withMessage('Password can not be empty!')
         .isLength({ min: 8 })
         .withMessage('Minimum 8 characters required!'),
 
