@@ -10,7 +10,7 @@ Content-Type: application/json; charset=utf-8
 
 {
   "firstName": "test123444",
-  "email": "test@t123123est.com",
+  "email": "test.com",
   "password": "tes123123tpw",
   "id": "3"
 }

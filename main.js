@@ -4,10 +4,12 @@ const cors = require('cors')
 const app = express()
 const port = 3000 // "Radiofrekvens"
 const userController = require('./controllers/userController.js')
+const validateCreateUser = require('./middleware/validators/userValidation.js')
 
 const { sequelize, userAccount } = require('./models')
 
 const migrationhelper = require('./migrationhelper')
+const { check } = require('express-validator')
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Credentials', '*');
@@ -32,23 +34,23 @@ app.use(session({
 
 
 app.use(express.json())
-
-app.get('/api/users', (req, res) => {
+// check('firstName').escape(),
+app.get('/api/users', check('firstName').escape(), (req, res) => {
     res.json(users)
 })
 
 
-app.get('/api/users/:anvId', (req, res) => {
-    console.log(req.params.anvId)
-    let p = users.find(user => user.id == req.params.anvId)
-    // 404???
-    if (p == undefined) {
-        res.status(404).send('Finns inte')
-    }
-    res.json(p)
-});
+// app.get('/api/users/:anvId', (req, res) => {
+//     console.log(req.params.anvId)
+//     let p = users.find(user => user.id == req.params.anvId)
+//     // 404???
+//     if (p == undefined) {
+//         res.status(404).send('Finns inte')
+//     }
+//     res.json(p)
+// });
 
-app.post('/api/users', userController.onCreateUser)
+app.post('/api/users', validateCreateUser.validateCreateUser, userController.onCreateUser)
 app.post('/api/signIn', userController.onLogin);
 
 app.listen(port, async (req, res) => {
