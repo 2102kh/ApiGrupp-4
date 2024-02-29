@@ -1,24 +1,26 @@
 const { UserAccount } = require('../models')
 const bcrypt = require('bcrypt')
 
-
-
 async function onCreateUser(req, res) {
     // sommar123
     const { firstName, email, password } = req.body
     const hashedPassword = await bcrypt.hash(password, 10)
 
+    const user = await UserAccount.findOne({
+        where: { email }
+    });
 
-
-
-    await UserAccount.create({
-        firstName: firstName,
-        email: email,
-        password: hashedPassword
-    })
-
-    // Cookien och vem är inloggad ???  ->  req
-    res.status(204).json({ email })
+    if(!user) {
+        await UserAccount.create({
+            firstName: firstName,
+            email: email,
+            password: hashedPassword     
+        })
+        // Cookien och vem är inloggad ???  ->  req
+        return res.status(204).json({ email })
+    } else {
+        return res.status(401);
+    }
 }
 
 async function onLogin(req, res) {
@@ -33,12 +35,12 @@ async function onLogin(req, res) {
         where: { email }
     });
     if (!user) {
-        return res.status(401).json('Login failed');
+        return res.status(401).send('Login failed');
     }
 
     const passwordValid = await bcrypt.compare(password, user.password);
     if (!passwordValid) {
-        return res.status(401).json('Login failed');
+        return res.status(401).send('Login failed');
     }
 
     req.session.userId = user.id
