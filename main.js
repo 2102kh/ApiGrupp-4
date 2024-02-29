@@ -5,8 +5,7 @@ const app = express()
 const port = 3000 // "Radiofrekvens"
 const userController = require('./controllers/userController.js')
 const validateCreateUser = require('./middleware/validators/userValidation.js')
-
-const { sequelize, userAccount } = require('./models')
+const userMsgController = require('./controllers/userMsgController.js')
 
 const migrationhelper = require('./migrationhelper')
 const { check } = require('express-validator')
@@ -15,30 +14,24 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Credentials', '*');
     next();
 });
-
 app.use(cors({
     origin: "http://localhost:5500",
     credentials: true,
     // : "http://localhost:5500",
 }))
-
-
-
 app.use(session({
     secret: 'my-secret-key',
     resave: false,
     saveUninitialized: true,
     // cookie: { secure: true } HTTPS
 }));
-
-
-
 app.use(express.json())
+
+
 // check('firstName').escape(),
 app.get('/api/users', check('firstName').escape(), (req, res) => {
     res.json(users)
 })
-
 
 // app.get('/api/users/:anvId', (req, res) => {
 //     console.log(req.params.anvId)
@@ -49,6 +42,9 @@ app.get('/api/users', check('firstName').escape(), (req, res) => {
 //     }
 //     res.json(p)
 // });
+
+app.post('/api/msg', userMsgController.onCreateMessage)
+app.get('/api/msg', userMsgController.onGetMessages)
 
 app.post('/api/users', validateCreateUser.validateCreateUser, userController.onCreateUser)
 app.post('/api/signIn', userController.onLogin);

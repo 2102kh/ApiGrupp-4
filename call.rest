@@ -4,7 +4,7 @@ GET http://localhost:3000/api/users
 ### Get single
 GET http://localhost:3000/api/users/1
 
-### Create new
+### Create new User
 POST http://localhost:3000/api/users
 Content-Type: application/json; charset=utf-8
 
@@ -13,6 +13,15 @@ Content-Type: application/json; charset=utf-8
   "email": "test@jh.com",
   "password": "tes123123tpw",
   "id": "3"
+}
+
+### Create new Message
+POST http://localhost:3000/api/msg
+Content-Type: application/json; charset=utf-8
+
+{
+  "userid": "7",
+  "message": "Hejsan"
 }
 
 ### UPDATE
