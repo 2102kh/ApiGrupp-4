@@ -10,16 +10,16 @@ async function onCreateUser(req, res) {
         where: { email }
     });
 
-    if(!user) {
+    if (user) {
+        return res.status(401).json({message: "Email already in use"});
+    } else {
         await UserAccount.create({
             firstName: firstName,
             email: email,
             password: hashedPassword     
         })
         // Cookien och vem är inloggad ???  ->  req
-        return res.status(204).json({ email })
-    } else {
-        return res.status(401);
+        return res.status(200).json({ email })
     }
 }
 
@@ -34,6 +34,7 @@ async function onLogin(req, res) {
     const user = await UserAccount.findOne({
         where: { email }
     });
+    
     if (!user) {
         return res.status(401).send('Login failed');
     }
