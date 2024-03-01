@@ -12,12 +12,15 @@ async function onCreateMessage(req, res) {
 }
 
 async function onGetMessages (req, res) {
+    // Hämtar alla meddelande från table
     const messages = await usermessages.findAll();
-    // FIND ALL MESSAGES AND MAP
-    console.log(messages);
-    // res.status(201).json({messages})
-}
+    // "destructure" varje objekt till ny array av objekt
+    const listOfmessages = messages.map((value) => {
+        return value.dataValues;
+    })
 
+    return listOfmessages;
+}
 
 module.exports = {
     onCreateMessage,

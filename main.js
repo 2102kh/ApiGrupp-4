@@ -44,13 +44,12 @@ app.get('/api/users', check('firstName').escape(), (req, res) => {
 // });
 
 app.post('/api/msg', userMsgController.onCreateMessage)
-app.get('/api/msg', userMsgController.onGetMessages)
+app.get('/api/msg', (req, res) => res.status(200).json(userMsgController.onGetMessages()))
 
 app.post('/api/users', validateCreateUser.validateCreateUser, userController.onCreateUser)
 app.post('/api/signIn', userController.onLogin);
 
 app.listen(port, async (req, res) => {
-
     console.log('Listening')
     await migrationhelper.migrate()
 })
