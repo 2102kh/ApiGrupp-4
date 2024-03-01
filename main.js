@@ -44,7 +44,10 @@ app.get('/api/users', check('firstName').escape(), (req, res) => {
 // });
 
 app.post('/api/msg', userMsgController.onCreateMessage)
-app.get('/api/msg', (req, res) => res.status(200).json(userMsgController.onGetMessages()))
+app.get('/api/msg', async (req, res) => {
+    const response = await userMsgController.onGetMessages()
+    res.json(response)
+})
 
 app.post('/api/users', validateCreateUser.validateCreateUser, userController.onCreateUser)
 app.post('/api/signIn', userController.onLogin);

@@ -9,10 +9,8 @@ POST http://localhost:3000/api/users
 Content-Type: application/json; charset=utf-8
 
 {
-  "firstName": "test123444",
-  "email": "test@jh.com",
-  "password": "tes123123tpw",
-  "id": "3"
+  "email": "jakob@jh.com",
+  "password": "qwertyuiQ1!"
 }
 
 ### Create new Message
