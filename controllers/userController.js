@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 
 async function onCreateUser(req, res) {
     // sommar123
-    const { firstName, email, password } = req.body
+    const { firstName, email, password, lastName } = req.body
     const hashedPassword = await bcrypt.hash(password, 10)
 
     const user = await UserAccount.findOne({
@@ -11,12 +11,13 @@ async function onCreateUser(req, res) {
     });
 
     if (user) {
-        return res.status(401).json({message: "Email already in use"});
+        return res.status(401).json({ message: "Email already in use" });
     } else {
         await UserAccount.create({
             firstName: firstName,
             email: email,
-            password: hashedPassword     
+            password: hashedPassword,
+            lastName: lastName
         })
         // Cookien och vem är inloggad ???  ->  req
         return res.status(200).json({ email })
@@ -34,7 +35,7 @@ async function onLogin(req, res) {
     const user = await UserAccount.findOne({
         where: { email }
     });
-    
+
     if (!user) {
         return res.status(401).send('Login failed');
     }

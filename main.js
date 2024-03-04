@@ -45,7 +45,7 @@ app.get('/api/users', check('firstName').escape(), (req, res) => {
 
 app.post('/api/msg', userMsgController.onCreateMessage)
 app.get('/api/msg', async (req, res) => {
-    const response = await userMsgController.onGetMessages()
+    const response = await userMsgController.onGetMessages(req, res)
     res.json(response)
 })
 
