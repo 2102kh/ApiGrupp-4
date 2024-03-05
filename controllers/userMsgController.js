@@ -1,4 +1,4 @@
-const { usermessages } = require('../models');
+const { usermessages, UserAccount } = require('../models');
 
 async function onCreateMessage(req, res) {
     const { message } = req.body;
@@ -11,27 +11,30 @@ async function onCreateMessage(req, res) {
     res.status(200).json({ status: "yepp" })
 }
 
+
 async function onGetMessages(req, res) {
-    // Hämtar alla meddelande från table
-    const messages = await usermessages.findAll();
-    // "destructure" varje objekt till ny array av objekt
-    const listOfmessages = messages.map((value) => {
+    try {
+        const messages = await usermessages.findAll({
+            include: [{ model: UserAccount, attributes: ['firstName'], required: false }]
+        });
 
-        if (req.session.userId == value.dataValues.userid) {
+        const listOfmessages = messages.map((message) => {
+            const msgData = message.toJSON();
+            const firstName = msgData.UserAccount ? msgData.UserAccount.firstName : null;
+            return {
+                message: msgData.message,
+                firstName: firstName,
+                login: req.session.userId == msgData.userid
+            };
+        });
 
-            value.dataValues.login = true
-        } else {
-            value.dataValues.login = false
-
-        }
-        return value.dataValues;
-
-    })
-
-    return listOfmessages;
+        res.status(200).json(listOfmessages);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 }
 
 module.exports = {
     onCreateMessage,
     onGetMessages
-}
+};
