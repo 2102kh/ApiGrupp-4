@@ -16,7 +16,7 @@ async function onGetMessages(req, res) {
     const messages = await usermessages.findAll();
     const users = await UserAccount.findAll();
     // "destructure" varje objekt till ny array av objekt
-    const listOfmessages = messages.map((value) => {
+    const listOfMessages = messages.map((value) => {
         if (req.session.userId == value.dataValues.userid) {
 
             value.dataValues.login = true
@@ -28,20 +28,15 @@ async function onGetMessages(req, res) {
     })
 
 
-    for (const user of users) {
-        const updatedList = listOfmessages.map((value) => {
-            if (user.dataValues.id == value.userid) {
-                value.firstname = user.dataValues.firstName
-
-
-
+    const updatedList = listOfMessages.map((value) => {
+        for (const user of users) {
+            if (value.userid == user.id) {
+                value.firstname = user.firstName
             }
-            return value
-
-        })
-        return updatedList
-    }
-
+        }
+        return value
+    })
+    return updatedList
 
 }
 

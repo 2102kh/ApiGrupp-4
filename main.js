@@ -45,8 +45,15 @@ app.get('/api/users', check('firstName').escape(), (req, res) => {
 
 app.post('/api/msg', userMsgController.onCreateMessage)
 app.get('/api/msg', async (req, res) => {
-    const response = await userMsgController.onGetMessages(req, res)
-    res.json(response)
+    if (req.session.userId) {
+        const response = await userMsgController.onGetMessages(req, res)
+        res.json(response)
+    }
+    else { res.status(201).json() }
+
+
+
+
 })
 
 app.post('/api/users', validateCreateUser.validateCreateUser, userController.onCreateUser)
