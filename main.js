@@ -9,6 +9,7 @@ const userMsgController = require('./controllers/userMsgController.js')
 
 const migrationhelper = require('./migrationhelper')
 const { check } = require('express-validator')
+const validateMsg = require('./middleware/validators/msgValidation.js')
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Credentials', '*');
@@ -43,7 +44,7 @@ app.get('/api/users', check('firstName').escape(), (req, res) => {
 //     res.json(p)
 // });
 
-app.post('/api/msg', userMsgController.onCreateMessage)
+app.post('/api/msg', validateMsg.validateMsg, userMsgController.onCreateMessage)
 app.get('/api/msg', async (req, res) => {
     if (req.session.userId) {
         const response = await userMsgController.onGetMessages(req, res)
